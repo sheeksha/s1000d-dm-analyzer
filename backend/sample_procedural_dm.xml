@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmodule xmlns="http://www.s1000d.org/S1000D_4-1/xml_schema_flat">
+  <identAndStatusSection>
+    <dmAddress>
+      <dmIdent>
+        <dmCode>FAKE-DMC-24-50-00-00A-720A-A</dmCode>
+        <dmTitle>Disconnect and reconnect wiring harness at avionics unit</dmTitle>
+      </dmIdent>
+    </dmAddress>
+  </identAndStatusSection>
+
+  <content>
+    <procedure>
+      <preliminaryRqmts>
+        <reqCondGroup>
+          <reqCond>Aircraft electrical power OFF</reqCond>
+          <reqCond>Avionics bay access panel open</reqCond>
+        </reqCondGroup>
+      </preliminaryRqmts>
+
+      <warning>
+        <para>Electrical hazard. Make sure all relevant power sources are switched OFF before starting.</para>
+      </warning>
+
+      <caution>
+        <para>Risk of equipment damage. Do not bend or damage connector pins.</para>
+      </caution>
+
+      <mainProcedure>
+        <proceduralStep>
+          <para>Release the connector locking mechanism.</para>
+        </proceduralStep>
+        <proceduralStep>
+          <para>Disconnect the wiring harness from the avionics unit connector.</para>
+        </proceduralStep>
+        <proceduralStep>
+          <para>Secure the harness to prevent strain or impact damage.</para>
+        </proceduralStep>
+
+        <note>
+          <para>Tag and cap connectors as required by local shop practices.</para>
+        </note>
+
+        <proceduralStep>
+          <para>To reconnect, connect the harness and engage the locking mechanism.</para>
+        </proceduralStep>
+        <proceduralStep>
+          <para>Verify the connector is fully seated and locked.</para>
+        </proceduralStep>
+      </mainProcedure>
+    </procedure>
+  </content>
+</dmodule>

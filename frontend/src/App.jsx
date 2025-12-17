@@ -1,47 +1,76 @@
 import { useState } from "react";
 
-function App() {
+export default function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const analyzeDM = async () => {
+  const analyze = async () => {
+    setError("");
+    setResult(null);
+
+    if (!file) {
+      setError("Please select an XML file first.");
+      return;
+    }
+
     setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+    try {
+      const form = new FormData();
+      form.append("file", file);
 
-    const res = await fetch(
-      "https://YOUR-RENDER-URL.onrender.com/analyze-dm",
-      {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${API_BASE}/analyze-dm`, {
         method: "POST",
-        body: formData
-      }
-    );
+        body: form
+      });
 
-    const data = await res.json();
-    setResult(data);
-    setLoading(false);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data?.detail || "Request failed");
+      } else {
+        setResult(data);
+      }
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div style={{ padding: 24, maxWidth: 900, margin: "0 auto", fontFamily: "system-ui" }}>
       <h2>S1000D 4.1 Data Module Analyzer</h2>
+      <p>Upload a Data Module XML file and get a quick structure/quality report.</p>
 
-      <input type="file" accept=".xml" onChange={e => setFile(e.target.files[0])} />
+      <input
+        type="file"
+        accept=".xml"
+        onChange={(e) => setFile(e.target.files?.[0] || null)}
+      />
 
-      <br /><br />
+      <div style={{ marginTop: 12 }}>
+        <button onClick={analyze} disabled={loading || !file}>
+          {loading ? "Analyzing..." : "Analyze"}
+        </button>
+      </div>
 
-      <button onClick={analyzeDM} disabled={!file || loading}>
-        {loading ? "Analyzing..." : "Analyze DM"}
-      </button>
+      {error && (
+        <div style={{ marginTop: 16, color: "crimson" }}>
+          <strong>Error:</strong> {error}
+        </div>
+      )}
 
       {result && (
-        <pre style={{ marginTop: "2rem" }}>
-          {JSON.stringify(result, null, 2)}
-        </pre>
+        <div style={{ marginTop: 16 }}>
+          <h3>Result</h3>
+          <pre style={{ background: "#f5f5f5", padding: 12, borderRadius: 8, overflow: "auto" }}>
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        </div>
       )}
     </div>
   );
 }
-
-export default App;
